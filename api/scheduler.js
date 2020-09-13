@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const { getCurrentView } = require('./callAPI');
-const { insertData } = require('./lowdb');
+const { create } = require('./mongodb');
 const getCurrentTime = require('./time');
 
 const scheduler = () => {
@@ -19,7 +19,7 @@ const scheduler = () => {
       view,
       time
     };
-    insertData(data);
+    create(data);
 
     console.log(`[${time}]: Done (${view})`);
   });
