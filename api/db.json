@@ -1,3 +1,22 @@
 {
-  "records": []
+  "records": [
+    {
+      "id": 1600002720999,
+      "username": "caohuy26",
+      "view": 160,
+      "time": "9/13/2020, 0:00:00 AM"
+    },
+    {
+      "id": 160000272032,
+      "username": "caohuy26",
+      "view": 162,
+      "time": "9/14/2020, 0:00:00 AM"
+    },
+    {
+      "id": 16000027243,
+      "username": "caohuy26",
+      "view": 179,
+      "time": "9/15/2020, 0:00:00 AM"
+    }
+  ]
 }

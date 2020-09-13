@@ -7,5 +7,4 @@ const getCurrentTime = () => {
   );
 };
 
-
 module.exports = getCurrentTime;
