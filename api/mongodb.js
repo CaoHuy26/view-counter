@@ -1,4 +1,5 @@
 const connection = require('./connect');
+const { DB_DATABASE, DB_COLLECTION } = require('./constant');
 
 const create = (data) => {
   connection((err, client) => {
@@ -6,10 +7,10 @@ const create = (data) => {
       throw err;
     }
   
-    const db = client.db('count_view');
+    const db = client.db(DB_DATABASE);
   
     try {
-      db.collection('records').insertOne(data);
+      db.collection(DB_COLLECTION).insertOne(data);
       // console.log('Create record success');
     }
     catch (error) {

@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const scheduler = require('./scheduler');
 const connection = require('./connect');
+const { DB_DATABASE, DB_COLLECTION } = require('./constant');
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ connection((err, client) => {
   }
   
   console.log('✅ MongoDB connected...');
-  const db = client.db('count_view');
+  const db = client.db(DB_DATABASE);
 
   app.get('/', async (req, res) => {
     const { date } = req.query;
@@ -24,7 +25,7 @@ connection((err, client) => {
       return res.send('Missing date');
     }
     try {
-      const result = await db.collection('records')
+      const result = await db.collection(DB_COLLECTION)
         .findOne({ date })
       
       if (!result) {
