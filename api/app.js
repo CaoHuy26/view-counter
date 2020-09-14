@@ -15,24 +15,28 @@ connection((err, client) => {
   }
   
   console.log('✅ MongoDB connected...');
+  const db = client.db('count_view');
 
   app.get('/', async (req, res) => {
-    res.send('Hello World 👋');
+    const { time } = req.query;
+
+    if (!time) {
+      return res.send('Missing time');
+    }
+    try {
+      const result = await db.collection('records')
+        .findOne({ time })
+      
+      if (!result) {
+        res.send('Not found');
+      }
+
+      res.status(200).json(result);
+    }
+    catch (error) {
+      res.send(error);
+    }
   });
-  
-  // app.get('/view', (req, res) => {
-  //   const { time } = req.query;
-    
-  //   const result = db.get('records')
-  //     .find({
-  //       time
-  //     })
-  //     .value();
-    
-  //   console.log(result)
-  
-  //   res.send(time);
-  // });
   
   app.listen(PORT, (error) => {
     if (error) {

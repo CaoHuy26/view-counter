@@ -10,18 +10,12 @@ const create = (data) => {
   
     try {
       db.collection('records').insertOne(data);
-      console.log('Create record success');
+      // console.log('Create record success');
     }
     catch (error) {
       console.log(error);
     }
   });
 };
-
-// db.collection('records').find({}).toArray((err, results) => {
-//   results.forEach(result => {
-//     console.log(result)
-//   })
-// });
 
 module.exports.create = create;

@@ -1,10 +1,12 @@
-const getCurrentTime = () => {
-  return new Date()
-  .toLocaleString('vn-vi', 
-    {
-      timeZone: 'Asia/Ho_Chi_Minh'
-    }
-  );
+const moment = require('moment');
+
+const getCurrentDate = () => {
+  return moment().format('DD/MM/YYYY');
 };
 
-module.exports = getCurrentTime;
+const getCurrentTime = () => {
+  return moment().format('LTS');
+};
+
+module.exports.getCurrentDate = getCurrentDate;
+module.exports.getCurrentTime = getCurrentTime;
