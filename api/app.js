@@ -18,14 +18,14 @@ connection((err, client) => {
   const db = client.db('count_view');
 
   app.get('/', async (req, res) => {
-    const { time } = req.query;
+    const { date } = req.query;
 
-    if (!time) {
-      return res.send('Missing time');
+    if (!date) {
+      return res.send('Missing date');
     }
     try {
       const result = await db.collection('records')
-        .findOne({ time })
+        .findOne({ date })
       
       if (!result) {
         res.send('Not found');
