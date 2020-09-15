@@ -12,4 +12,17 @@ const getCurrentView = async (username) => {
   return value;
 };
 
+const getViewOfYesterday = async (yesterday) => {
+  let viewOfYesterday;
+  const res = await axios.get(`https://git-counter-api.glitch.me?date=${yesterday}`);
+
+  if (res.data === 'Not found') {
+    return viewOfYesterday = 0;
+  }
+  
+  const { view } = res.data;
+  return viewOfYesterday = view;
+};
+
 module.exports.getCurrentView = getCurrentView;
+module.exports.getViewOfYesterday = getViewOfYesterday;

@@ -8,5 +8,11 @@ const getCurrentTime = () => {
   return moment().format('LTS');
 };
 
+const getYesterday = () => {
+  return moment().subtract(1, 'days').startOf('day').format('DD/MM/YYYY');
+};
+
+
 module.exports.getCurrentDate = getCurrentDate;
 module.exports.getCurrentTime = getCurrentTime;
+module.exports.getYesterday = getYesterday;
