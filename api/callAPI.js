@@ -14,7 +14,7 @@ const getCurrentView = async (username) => {
 
 const getViewOfYesterday = async (yesterday) => {
   let viewOfYesterday;
-  const res = await axios.get(`https://git-counter-api.glitch.me?date=${yesterday}`);
+  const res = await axios.get(`${process.env.APP_URL}?date=${yesterday}`);
 
   if (res.data === 'Not found') {
     return viewOfYesterday = 0;
@@ -25,7 +25,7 @@ const getViewOfYesterday = async (yesterday) => {
 };
 
 const wakeGlitchUp = async () => {
-  await axios.get('https://git-counter-api.glitch.me');
+  await axios.get(`${process.env.APP_URL}`);
 };
 
 module.exports.getCurrentView = getCurrentView;
