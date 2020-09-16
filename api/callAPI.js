@@ -24,5 +24,10 @@ const getViewOfYesterday = async (yesterday) => {
   return viewOfYesterday = view;
 };
 
+const wakeGlitchUp = async () => {
+  await axios.get('https://git-counter-api.glitch.me');
+};
+
 module.exports.getCurrentView = getCurrentView;
 module.exports.getViewOfYesterday = getViewOfYesterday;
+module.exports.wakeGlitchUp = wakeGlitchUp;
