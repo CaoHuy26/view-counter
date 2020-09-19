@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card as CardTD } from 'antd';
 import { ArrowUpOutlined } from '@ant-design/icons';
+import COLOR from '../constants/color';
 
 const Card = () => {
   return (
@@ -11,6 +12,9 @@ const Card = () => {
             3203
           </h1>
           <ArrowUpOutlined style={styles.arrowIcon} />
+          <span style={styles.incrementNumber}>
+            12
+          </span>
         </div>
         <p style={styles.time}>
           Cập nhật: 12:00 AM - 19/09/2020
@@ -53,11 +57,15 @@ const styles = {
   },
   arrowIcon: {
     fontSize: 24,
-    color: 'green',
+    color: COLOR.Japanese_Laurel,
     marginTop: 0
+  },
+  incrementNumber: {
+    marginTop: 12,
+    color: COLOR.Japanese_Laurel
   },
   time: {
     margin: 0,
-    color: '#b3b3b3'
+    color: COLOR.Nobel
   }
 };
