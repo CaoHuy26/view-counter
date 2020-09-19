@@ -25,18 +25,52 @@ connection((err, client) => {
       return res.send('Missing date');
     }
     try {
-      const result = await db.collection(DB_COLLECTION)
-        .findOne({ date })
+      const record = await db.collection(DB_COLLECTION)
+        .findOne({ date });
       
-      if (!result) {
+      if (!record) {
         res.send('Not found');
       }
 
-      res.status(200).json(result);
+      res.status(200).json({
+        statusCode: 200,
+        success: true,
+        record
+      });
     }
     catch (error) {
       res.send(error);
     }
+  });
+
+  app.get('/records', async (req, res) => {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 7;
+    const offset = page > 1 ? (page * nPerPage - 1) : 0;
+
+    // Tổng số bản ghi đang có
+    const numberOfRecords = await db.collection(DB_COLLECTION).countDocuments();
+
+    db.collection(DB_COLLECTION)
+      .find({})
+      .skip(offset)
+      .limit(limit)
+      .toArray((err, records) => {
+        if (err) {
+          res.json(err);
+        }
+
+        res.status(200).json({
+          statusCode: 200,
+          sucess: true,
+          page,
+          nPerPage,
+          offset,
+          limit,
+          numberOfRecords,
+          records
+        });
+      });
   });
   
   app.listen(PORT, (error) => {
