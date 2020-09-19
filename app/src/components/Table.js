@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Table as TableTD } from 'antd';
 import columns from '../constants/columns';
 
@@ -78,6 +78,16 @@ const data = [
 ];
 
 const Table = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onChangePagination = useCallback((currentPage) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      console.log(currentPage);
+    }, 1500);
+  }, []);
+
   return (
     <TableTD
       style={styles.table}
@@ -85,8 +95,13 @@ const Table = () => {
       columns={columns}
       bordered={true}
       rowKey={record => record._id}
+      loading={isLoading}
       pagination={{
-        defaultPageSize: 7
+        total: 80, // Nhận tổng số bản ghi trong db
+        pageSizeOptions: ['7'],
+        defaultPageSize: 7, // Mỗi page chỉ hiển thị 7 bản ghi
+        position: ['bottomCenter'],
+        onChange: (currentPage) => onChangePagination(currentPage) // Mỗi lần thay đổi page gọi lại API
       }}
     />
   );
