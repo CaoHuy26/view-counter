@@ -1,9 +1,11 @@
 import React from 'react';
+import { Card, Table } from './components';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hi</h1>
+      <Card />
+      <Table />
     </div>
   );
 }
