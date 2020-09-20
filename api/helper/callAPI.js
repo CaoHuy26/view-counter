@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const axios = require('axios');
-const generateUserCode = require('./generateUserCode');
+const generateUserCode = require('../utils/generateUserCode');
 
 dotenv.config();
 

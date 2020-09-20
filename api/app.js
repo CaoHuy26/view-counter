@@ -1,9 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const scheduler = require('./scheduler');
-const connection = require('./connect');
-const { DB_DATABASE, DB_COLLECTION } = require('./constant');
+const scheduler = require('./helper/scheduler');
+const connection = require('./configs/connect');
+const { DB_DATABASE, DB_COLLECTION } = require('./constants/constant');
 
 dotenv.config();
 
@@ -52,9 +52,6 @@ connection((err, client) => {
     const limit = req.query.limit || 7;
     const offset = page > 1 ? (page * limit - 1) : 0;
 
-    // Tổng số bản ghi đang có
-    const numberOfRecords = await db.collection(DB_COLLECTION).countDocuments();
-
     db.collection(DB_COLLECTION)
       .find({})
       .skip(offset)
@@ -70,10 +67,23 @@ connection((err, client) => {
           page,
           offset,
           limit,
-          numberOfRecords,
           records
         });
       });
+  });
+
+  app.get('/record/total', async (req, res) => {
+    // Tổng số bản ghi đang có
+    const numberOfRecords = await db.collection(DB_COLLECTION).countDocuments();
+
+    if (!numberOfRecords) {
+      res.send('Not found');
+    }
+    res.status(200).json({
+      statusCode: 200,
+      success: true,
+      numberOfRecords
+    });
   });
   
   app.listen(PORT, (error) => {

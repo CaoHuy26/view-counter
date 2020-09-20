@@ -1,5 +1,5 @@
-const connection = require('./connect');
-const { DB_DATABASE, DB_COLLECTION } = require('./constant');
+const connection = require('../configs/connect');
+const { DB_DATABASE, DB_COLLECTION } = require('../constants/constant');
 
 const create = (data) => {
   connection((err, client) => {

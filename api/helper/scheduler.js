@@ -1,7 +1,8 @@
 const cron = require('node-cron');
 const { getCurrentView, getViewOfYesterday, wakeGlitchUp } = require('./callAPI');
-const { create } = require('./mongodb');
-const { getCurrentDate, getCurrentTime, getYesterday } = require('./time');
+const { create } = require('../models/mongodb');
+const { getCurrentDate, getCurrentTime, getYesterday } = require('../utils/time');
+const { SCHEDULER_TIME } = require('../constants/constant');
 
 const scheduler = () => {
   console.log('⛏ Scheduler is working...');
@@ -16,7 +17,7 @@ const scheduler = () => {
   // '0 17 * * *'
   // Thực hiện vào 0:00 giờ mỗi ngày (theo giờ hệ thống của Glitch)
   // -> 7:00 theo giờ Việt Nam
-  cron.schedule('0 0 * * *', async () => {
+  cron.schedule(SCHEDULER_TIME, async () => {
     const date = getCurrentDate();
     const time = getCurrentTime();
     const yesterday = getYesterday();
