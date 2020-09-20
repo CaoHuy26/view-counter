@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const scheduler = require('./scheduler');
 const connection = require('./connect');
 const { DB_DATABASE, DB_COLLECTION } = require('./constant');
@@ -9,6 +10,9 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+
+app.disable('etag');
+app.use(cors());
 
 connection((err, client) => {
   if (err) {
@@ -46,7 +50,7 @@ connection((err, client) => {
   app.get('/records', async (req, res) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 7;
-    const offset = page > 1 ? (page * nPerPage - 1) : 0;
+    const offset = page > 1 ? (page * limit - 1) : 0;
 
     // Tổng số bản ghi đang có
     const numberOfRecords = await db.collection(DB_COLLECTION).countDocuments();
@@ -64,7 +68,6 @@ connection((err, client) => {
           statusCode: 200,
           sucess: true,
           page,
-          nPerPage,
           offset,
           limit,
           numberOfRecords,
