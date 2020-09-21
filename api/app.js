@@ -33,7 +33,11 @@ connection((err, client) => {
         .findOne({ date });
       
       if (!record) {
-        res.send('Not found');
+        return res.json({
+          statusCode: 404,
+          success: false,
+          msg: 'Not Found'
+        });
       }
 
       res.status(200).json({
@@ -81,7 +85,7 @@ connection((err, client) => {
       throw error;
     }
   
-    scheduler();
+    // scheduler();
     console.log(`🚀 App is running on port ${PORT}...`);
   });
 });
