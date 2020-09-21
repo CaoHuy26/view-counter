@@ -1,25 +1,73 @@
-import React from 'react';
-import { Card as CardTD } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Card as CardTD, Result, Skeleton } from 'antd';
 import { ArrowUpOutlined } from '@ant-design/icons';
 import COLOR from '../constants/color';
+import axios from 'axios';
+import { getCurrentDate } from '../utils/time';
 
 const Card = () => {
+  const [viewOfToday, setViewOfToday] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const today = getCurrentDate();
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/?date=${today}`);
+      const { data } = res;
+      setViewOfToday(data.record);
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div style={styles.container}>
-      <CardTD style={styles.card}>
-        <div style={styles.currentView}>
-          <h1 style={styles.view}>
-            3203
-          </h1>
-          <ArrowUpOutlined style={styles.arrowIcon} />
-          <span style={styles.incrementNumber}>
-            12
-          </span>
-        </div>
-        <p style={styles.time}>
-          Cập nhật: 12:00 AM - 19/09/2020
-        </p>
-      </CardTD>
+      {
+        isLoading
+          ? (
+            <div style={styles.skeleton}>
+              <Skeleton
+                active
+                title={false}
+                round='circle'
+                paragraph={{
+                  rows: 4
+                }}
+              />
+            </div>
+          )
+          : (
+            <CardTD style={styles.card}>
+              {
+                viewOfToday
+                  ? (
+                    <>
+                      <div style={styles.currentView}>
+                        <h1 style={styles.view}>
+                          {viewOfToday.view}
+                        </h1>
+                        <ArrowUpOutlined style={styles.arrowIcon} />
+                        <span style={styles.incrementNumber}>
+                          {viewOfToday.differenceView}
+                        </span>
+                      </div>
+                      <p style={styles.time}>
+                        Cập nhật: {viewOfToday.time} - {viewOfToday.date}
+                      </p>
+                    </>
+                  )
+                  : (
+                    <Result
+                      status='error'
+                      subTitle='Không tìm thấy lượt xem hôm nay'
+                    />
+                  )
+              }
+            </CardTD>
+          )
+      }
+      
     </div>
   );
 };
@@ -32,6 +80,13 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: 300
+  },
+  skeleton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    width: 300,
+    height: 180,
   },
   card: {
     alignItems: 'center',

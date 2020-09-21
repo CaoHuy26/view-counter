@@ -4,6 +4,7 @@ import { Card, Table } from './components';
 import store from './redux/store';
 
 function App() {
+  console.log(`🚀 ${process.env.REACT_APP_API_URL}`)
   return (
     <Provider store={store}>
       <div className="App">
