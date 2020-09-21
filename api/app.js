@@ -50,7 +50,10 @@ connection((err, client) => {
   app.get('/records', async (req, res) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 7;
-    const offset = page > 1 ? (page * limit - 1) : 0;
+    const offset = page > 1 ? ((page - 1) * limit) : 0;
+    
+    // Tổng số bản ghi đang có
+    const numberOfRecords = await db.collection(DB_COLLECTION).countDocuments();
 
     db.collection(DB_COLLECTION)
       .find({})
@@ -64,26 +67,13 @@ connection((err, client) => {
         res.status(200).json({
           statusCode: 200,
           sucess: true,
+          numberOfRecords,
           page,
           offset,
           limit,
           records
         });
       });
-  });
-
-  app.get('/record/total', async (req, res) => {
-    // Tổng số bản ghi đang có
-    const numberOfRecords = await db.collection(DB_COLLECTION).countDocuments();
-
-    if (!numberOfRecords) {
-      res.send('Not found');
-    }
-    res.status(200).json({
-      statusCode: 200,
-      success: true,
-      numberOfRecords
-    });
   });
   
   app.listen(PORT, (error) => {
