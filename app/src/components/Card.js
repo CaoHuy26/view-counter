@@ -31,9 +31,7 @@ const Card = () => {
                 active
                 title={false}
                 round='circle'
-                paragraph={{
-                  rows: 4
-                }}
+                paragraph={{ rows: 4 }}
               />
             </div>
           )

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import recordReducers from './records';
+import recordReducers from './recordReducers';
 
 const reducers = combineReducers({
-  records: recordReducers
+  recordReducers
 });
 
 export default reducers;

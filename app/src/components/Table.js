@@ -1,31 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Table as TableTD } from 'antd';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import columns from '../constants/columns';
+import recordActions from '../redux/actions/recordActions';
 
 const Table = () => {
-  const [data, setData] = useState({
-    numberOfRecords: 1,
-    records: []
-  });
+  const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState();
+ 
+  const recordReducers = useSelector(state => state.recordReducers); 
+  // console.log(`recordReducers: {$recordReducers}`)
+  const { isLoading, numberOfRecords, records, erorr } = recordReducers;
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/records?page=${page}`);
-      const { data } = res;
-      setData({
-        numberOfRecords: data.numberOfRecords,
-        records: data.records
-      });
-      setIsLoading(false);
-    };
-
-    fetchData();
-    console.log(`Page: ${page}`)
-  }, [data.numberOfRecords, page]);
+    dispatch(recordActions.getRecords(page))
+    // console.log(`Page: ${page}`)
+  }, [dispatch, page]);
 
   const onChangePagination = useCallback((currentPage) => {
     setPage(currentPage);
@@ -34,13 +24,13 @@ const Table = () => {
   return (
     <TableTD
       style={styles.table}
-      dataSource={data.records}
+      dataSource={records}
       columns={columns}
       bordered={true}
       rowKey={record => record._id}
       loading={isLoading}
       pagination={{
-        total: data.numberOfRecords, // Nhận tổng số bản ghi trong db
+        total: numberOfRecords, // Nhận tổng số bản ghi trong db
         pageSizeOptions: ['7'],
         defaultPageSize: 7, // Mỗi page chỉ hiển thị 7 bản ghi
         position: ['bottomCenter'],
