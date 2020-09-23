@@ -1,13 +1,14 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
 import ActionTypes from '../actions/types';
+import recordAPI from '../../api/recordAPI';
 
 function* fetchRecord(payload) {
   try {
     const { page } = payload;
     
-    const res = yield axios.get(`${process.env.REACT_APP_API_URL}/records?page=${page}`);
+    const res = yield recordAPI.getRecords(page);
     const { data } = res;
+
     yield put({
       type: ActionTypes.RECORD_FETCH_SUCCEEDED,
       payload: data
@@ -20,7 +21,6 @@ function* fetchRecord(payload) {
     });
   }
 };
-
 
 function* fetchRecordWatcher() {
   yield takeLatest(ActionTypes.RECORD_FETCH_REQUEST, fetchRecord);

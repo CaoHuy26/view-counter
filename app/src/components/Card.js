@@ -4,6 +4,7 @@ import { ArrowUpOutlined } from '@ant-design/icons';
 import COLOR from '../constants/color';
 import axios from 'axios';
 import { getCurrentDate } from '../utils/time';
+import recordAPI from '../api/recordAPI';
 
 const Card = () => {
   const [viewOfToday, setViewOfToday] = useState();
@@ -12,8 +13,9 @@ const Card = () => {
   useEffect(() => {
     const fetchData = async () => {
       const today = getCurrentDate();
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/?date=${today}`);
+      const res = await recordAPI.getRecordOfToday(today);
       const { data } = res;
+      console.log(data)
       setViewOfToday(data.record);
       setIsLoading(false);
     };
