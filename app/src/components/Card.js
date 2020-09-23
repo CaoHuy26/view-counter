@@ -1,32 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Card as CardTD, Result, Skeleton } from 'antd';
 import { ArrowUpOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import recordActions from '../redux/actions/recordActions';
 import COLOR from '../constants/color';
-import axios from 'axios';
 import { getCurrentDate } from '../utils/time';
-import recordAPI from '../api/recordAPI';
 
 const Card = () => {
-  const [viewOfToday, setViewOfToday] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const recordReducers = useSelector(state => state.recordReducers);
+
+  const { idLoadingRecordOfToday, record, error } = recordReducers;
   
   useEffect(() => {
-    const fetchData = async () => {
-      const today = getCurrentDate();
-      const res = await recordAPI.getRecordOfToday(today);
-      const { data } = res;
-      console.log(data)
-      setViewOfToday(data.record);
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, []);
+    const today = getCurrentDate();
+    dispatch(recordActions.getRecordOfToday(today));
+  }, [dispatch]);
 
   return (
     <div style={styles.container}>
       {
-        isLoading
+        idLoadingRecordOfToday
           ? (
             <div style={styles.skeleton}>
               <Skeleton
@@ -40,20 +34,20 @@ const Card = () => {
           : (
             <CardTD style={styles.card}>
               {
-                viewOfToday
+                record
                   ? (
                     <>
                       <div style={styles.currentView}>
                         <h1 style={styles.view}>
-                          {viewOfToday.view}
+                          {record.view}
                         </h1>
                         <ArrowUpOutlined style={styles.arrowIcon} />
                         <span style={styles.incrementNumber}>
-                          {viewOfToday.differenceView}
+                          {record.differenceView}
                         </span>
                       </div>
                       <p style={styles.time}>
-                        Cập nhật: {viewOfToday.time} - {viewOfToday.date}
+                        Cập nhật: {record.time} - {record.date}
                       </p>
                     </>
                   )
@@ -67,7 +61,6 @@ const Card = () => {
             </CardTD>
           )
       }
-      
     </div>
   );
 };

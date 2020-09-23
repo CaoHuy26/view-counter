@@ -26,6 +26,31 @@ function* fetchRecordWatcher() {
   yield takeLatest(ActionTypes.RECORD_FETCH_REQUEST, fetchRecord);
 };
 
+function* fetchRecordOfToday(payload) {
+  try {
+    const { today } = payload;
+
+    const res = yield recordAPI.getRecordOfToday(today);
+    const { data } = res;
+
+    yield put({
+      type: ActionTypes.RECORD_TODAY_FETCH_SUCCEEDED,
+      payload: data
+    });
+  }
+  catch (error) {
+    yield put({
+      type: ActionTypes.RECORD_TODAY_FETCH_FAILED,
+      error
+    });
+  }
+};
+
+function* fetchRecordOfTodayWatcher() {
+  yield takeLatest(ActionTypes.RECORD_TODAY_FETCH_REQUEST, fetchRecordOfToday);
+};
+
 export {
-  fetchRecordWatcher
+  fetchRecordWatcher,
+  fetchRecordOfTodayWatcher
 };
