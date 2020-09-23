@@ -61,6 +61,7 @@ connection((err, client) => {
 
     db.collection(DB_COLLECTION)
       .find({})
+      .sort({ _id : -1 })
       .skip(offset)
       .limit(limit)
       .toArray((err, records) => {
